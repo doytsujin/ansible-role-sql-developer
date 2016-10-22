@@ -1,7 +1,7 @@
 Role Name
 =========
 
-Installation of tools than any self-respecting C/C++ developer loves and needs.
+Installation of tools than any self-respecting SQL developer loves and needs.
 
 Requirements
 ------------
@@ -11,8 +11,7 @@ TODO
 Role Variables
 --------------
 
-* cpp_clion_install: true
-* cpp_clion_version: 2016.2.3
+TODO
 
 Dependencies
 ------------
@@ -25,7 +24,7 @@ Example Playbook
 ```
 - hosts: servers
   roles:
-      - { role: kurron.cpp-developer, cpp_clion_version: 2016.2.3 }
+      - { role: kurron.sql-developer, cpp_clion_version: 2016.2.3 }
 ```
 
 License

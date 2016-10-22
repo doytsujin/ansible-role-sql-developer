@@ -7,7 +7,7 @@
       mode: 0755
       recurse: yes
   with_items:
-  - "{{ansible_user_dir}}/{{cpp_software_directory}}"
+  - "{{ansible_user_dir}}/{{sql_software_directory}}"
 
 - name: Install Required Packages
   become: yes
@@ -17,43 +17,43 @@
   with_items:
   - "curl"
 
-- name: Download CLion Tarball
+- name: Download DataGrip Tarball
   become: no
   get_url:
-      url: "https://download.jetbrains.com/cpp/CLion-{{cpp_clion_version}}.tar.gz"
-      dest: "{{ansible_user_dir}}/{{cpp_download_directory}}/clion-{{cpp_clion_version}}.tar.gz"
+      url: "https://download.jetbrains.com/datagrip/datagrip-{{sql_datagrip_version}}.tar.gz"
+      dest: "{{ansible_user_dir}}/{{sql_download_directory}}/datagrip-{{sql_datagrip_version}}.tar.gz"
       mode: 0444
-  when: cpp_clion_install
+  when: sql_datagrip_install
 
-- name: Uncompress CLion Tarball
+- name: Uncompress DataGrip Tarball
   become: no
   unarchive:
-      src: "{{ansible_user_dir}}/{{cpp_download_directory}}/clion-{{cpp_clion_version}}.tar.gz"
-      dest: "{{ansible_user_dir}}/{{cpp_software_directory}}"
+      src: "{{ansible_user_dir}}/{{sql_download_directory}}/datagrip-{{sql_datagrip_version}}.tar.gz"
+      dest: "{{ansible_user_dir}}/{{sql_software_directory}}"
       copy: no
       owner: "{{ansible_user_uid}}"
       group: "{{ansible_user_gid}}"
       mode: 0555
-      creates: "{{ansible_user_dir}}/{{cpp_software_directory}}/clion-{{cpp_clion_version}}/build.txt"
-  when: cpp_clion_install
+      creates: "{{ansible_user_dir}}/{{sql_software_directory}}/DataGrip-{{sql_datagrip_version}}/build.txt"
+  when: sql_datagrip_install
 
-- name: Create Softlink To CLion
+- name: Create Softlink To DataGrip
   become: no
   file:
-      src: "{{ansible_user_dir}}/{{cpp_software_directory}}/clion-{{cpp_clion_version}}"
-      dest: "{{ansible_user_dir}}/{{cpp_software_directory}}/clion"
+      src: "{{ansible_user_dir}}/{{sql_software_directory}}/DataGrip-{{sql_datagrip_version}}"
+      dest: "{{ansible_user_dir}}/{{sql_software_directory}}/datagrip"
       owner: "{{ansible_user_uid}}"
       group: "{{ansible_user_gid}}"
       state: link
-  when: cpp_clion_install
+  when: sql_datagrip_install
 
-- name: Create Desktop Icon For CLion
+- name: Create Desktop Icon For DataGrip
   become: no
   template:
-      src: "templates/clion.desktop.j2"
-      dest: "{{ansible_user_dir}}/Desktop/clion.desktop"
+      src: "templates/datagrip.desktop.j2"
+      dest: "{{ansible_user_dir}}/Desktop/datagrip.desktop"
       owner: "{{ansible_user_uid}}"
       group: "{{ansible_user_gid}}"
       mode: 0555
-  when: cpp_clion_install
+  when: sql_datagrip_install
 
