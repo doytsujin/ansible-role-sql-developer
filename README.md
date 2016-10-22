@@ -11,7 +11,10 @@ TODO
 Role Variables
 --------------
 
-TODO
+* sql_datagrip_install: true
+* sql_datagrip_version: 2016.2.6
+* sql_mysql_tools_install: true
+* sql_postgresql_tools_install: true
 
 Dependencies
 ------------
@@ -24,7 +27,7 @@ Example Playbook
 ```
 - hosts: servers
   roles:
-      - { role: kurron.sql-developer, cpp_clion_version: 2016.2.3 }
+      - { role: kurron.sql-developer, sql_postgresql_tools_install: true }
 ```
 
 License

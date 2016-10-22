@@ -32,8 +32,7 @@ galaxy_info:
 
   galaxy_tags:
       - development
-      - C
-      - C++
+      - SQL
       - JetBrains
 
 dependencies: []
