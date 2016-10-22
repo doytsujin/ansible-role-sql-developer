@@ -17,6 +17,28 @@
   with_items:
   - "curl"
 
+- name: Install MySQL Packages
+  become: yes
+  package:
+      name: "{{item}}"
+      state: present
+  with_items:
+  - "mysql-client"
+  - "mysql-workbench"
+  when: sql_mysql_tools_install
+
+- name: Install PostreSQL Packages
+  become: yes
+  package:
+      name: "{{item}}"
+      state: present
+  with_items:
+  - "pgadmin3"
+  - "pgcli"
+  - "pgmodeler"
+  - "postgresql-client"
+  when: sql_postgresql_tools_install
+
 - name: Download DataGrip Tarball
   become: no
   get_url:
