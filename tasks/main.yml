@@ -5,9 +5,35 @@
       name: "{{item}}"
       state: present
   with_items:
+  - "mysql-utilities"
+  - "mytop"
+  - "mycli"
+  when: sql_mysql_tools_install and (ansible_distribution == "Fedora")
+
+- name: Install MySQL Packages
+  become: yes
+  package:
+      name: "{{item}}"
+      state: present
+  with_items:
   - "mysql-client"
   - "mysql-workbench"
-  when: sql_mysql_tools_install
+  when: sql_mysql_tools_install and (ansible_distribution == "Ubuntu")
+
+- name: Install PostreSQL Packages
+  become: yes
+  package:
+      name: "{{item}}"
+      state: present
+  with_items:
+  - "pgadmin3"
+  - "pgmodeler"
+  - "pgcenter"
+  - "pgtoolkit"
+  - "pg_top"
+  - "pg_view"
+  - "postgresql"
+  when: sql_postgresql_tools_install and (ansible_distribution == "Fedora")
 
 - name: Install PostreSQL Packages
   become: yes
@@ -19,7 +45,7 @@
   - "pgcli"
   - "pgmodeler"
   - "postgresql-client"
-  when: sql_postgresql_tools_install
+  when: sql_postgresql_tools_install and (ansible_distribution == "Ubuntu")
 
 - name: Download DataGrip Tarball
   become: no
