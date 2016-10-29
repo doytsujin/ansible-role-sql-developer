@@ -1,22 +1,4 @@
 ---
-- name: Create unprivledged folders
-  become: no
-  file:
-      path: "{{item}}"
-      state: directory
-      mode: 0755
-      recurse: yes
-  with_items:
-  - "{{ansible_user_dir}}/{{sql_software_directory}}"
-
-- name: Install Required Packages
-  become: yes
-  package:
-      name: "{{item}}"
-      state: present
-  with_items:
-  - "curl"
-
 - name: Install MySQL Packages
   become: yes
   package:
@@ -43,27 +25,27 @@
   become: no
   get_url:
       url: "https://download.jetbrains.com/datagrip/datagrip-{{sql_datagrip_version}}.tar.gz"
-      dest: "{{ansible_user_dir}}/{{sql_download_directory}}/datagrip-{{sql_datagrip_version}}.tar.gz"
+      dest: "{{ansible_user_dir}}/{{base_download_directory}}/datagrip-{{sql_datagrip_version}}.tar.gz"
       mode: 0444
   when: sql_datagrip_install
 
 - name: Uncompress DataGrip Tarball
   become: no
   unarchive:
-      src: "{{ansible_user_dir}}/{{sql_download_directory}}/datagrip-{{sql_datagrip_version}}.tar.gz"
-      dest: "{{ansible_user_dir}}/{{sql_software_directory}}"
+      src: "{{ansible_user_dir}}/{{base_download_directory}}/datagrip-{{sql_datagrip_version}}.tar.gz"
+      dest: "{{ansible_user_dir}}/{{base_software_directory}}"
       copy: no
       owner: "{{ansible_user_uid}}"
       group: "{{ansible_user_gid}}"
       mode: 0555
-      creates: "{{ansible_user_dir}}/{{sql_software_directory}}/DataGrip-{{sql_datagrip_version}}/build.txt"
+      creates: "{{ansible_user_dir}}/{{base_software_directory}}/DataGrip-{{sql_datagrip_version}}/build.txt"
   when: sql_datagrip_install
 
 - name: Create Softlink To DataGrip
   become: no
   file:
-      src: "{{ansible_user_dir}}/{{sql_software_directory}}/DataGrip-{{sql_datagrip_version}}"
-      dest: "{{ansible_user_dir}}/{{sql_software_directory}}/datagrip"
+      src: "{{ansible_user_dir}}/{{base_software_directory}}/DataGrip-{{sql_datagrip_version}}"
+      dest: "{{ansible_user_dir}}/{{base_software_directory}}/datagrip"
       owner: "{{ansible_user_uid}}"
       group: "{{ansible_user_gid}}"
       state: link
@@ -78,4 +60,21 @@
       group: "{{ansible_user_gid}}"
       mode: 0555
   when: sql_datagrip_install
+
+- name: Set Global Environment To Have DataGrip Use Shared JDK
+  become: yes
+  template:
+      src: "templates/datagrip-environment.sh.j2"
+      dest: "/etc/profile.d/datagrip-environment.sh"
+      owner: "{{ansible_user_uid}}"
+      group: "{{ansible_user_gid}}"
+      mode: 0555
+  when: sql_datagrip_share_jdk
+
+- name: Remove DataGrip's Embedded JDK
+  become: no
+  file:
+      path: "{{ansible_user_dir}}/{{base_software_directory}}/datagrip/jre"
+      state: absent
+  when: sql_datagrip_share_jdk
 
