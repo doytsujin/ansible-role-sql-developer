@@ -84,7 +84,7 @@
       dest: "{{ansible_user_dir}}/Desktop/datagrip.desktop"
       owner: "{{ansible_user_uid}}"
       group: "{{ansible_user_gid}}"
-      mode: 0555
+      mode: 0755
   when: sql_datagrip_install
 
 - name: Set Global Environment To Have DataGrip Use Shared JDK
