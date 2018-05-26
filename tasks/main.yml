@@ -4,7 +4,7 @@
   package:
       name: "{{item}}"
       state: present
-  with_items:
+  loop:
   - "mysql-utilities"
   - "mytop"
   - "mycli"
@@ -15,7 +15,7 @@
   package:
       name: "{{item}}"
       state: present
-  with_items:
+  loop:
   - "mysql-client"
   - "mysql-workbench"
   when: sql_mysql_tools_install and (ansible_distribution == "Ubuntu")
@@ -25,7 +25,7 @@
   package:
       name: "{{item}}"
       state: present
-  with_items:
+  loop:
   - "pgadmin3"
   - "pgmodeler"
   - "pgcenter"
@@ -40,7 +40,7 @@
   package:
       name: "{{item}}"
       state: present
-  with_items:
+  loop:
   - "pgadmin3"
   - "pgcli"
   - "pgmodeler"
