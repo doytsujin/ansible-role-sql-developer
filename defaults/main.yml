@@ -1,7 +1,7 @@
 ---
 # https://www.jetbrains.com/datagrip/
 sql_datagrip_install: true
-sql_datagrip_version: 2018.3
+sql_datagrip_version: 2018.3.1
 sql_datagrip_share_jdk: true
 
 sql_mysql_tools_install: true
